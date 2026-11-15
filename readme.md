@@ -1,3 +1,11 @@
+> **@pezkuwi/deepmerge** is a maintained fork of [TehShrike/deepmerge](https://github.com/TehShrike/deepmerge) 4.3.1
+> (MIT, unchanged API). It never copies a `__proto__` key into a merged object, which fixes
+> CVE-2026-93753 / GHSA-gcqx-w48m-w2h4 (the returned object could inherit an attacker-chosen prototype when the
+> target had a null prototype, held a `null` or primitive placeholder, or owned a `__proto__` key), for which no
+> upstream release exists. Use it in place of `deepmerge` with a resolution:
+> `"resolutions": { "deepmerge": "npm:@pezkuwi/deepmerge@^4.3.2" }` (yarn) or
+> `"overrides": { "deepmerge": "npm:@pezkuwi/deepmerge@^4.3.2" }` (npm).
+
 # deepmerge
 
 Merges the enumerable properties of two or more objects deeply.

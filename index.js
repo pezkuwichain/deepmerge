@@ -44,6 +44,15 @@ function propertyIsOnObject(object, property) {
 	}
 }
 
+// Assigning to `__proto__` on the destination replaces its prototype instead of
+// creating a property. propertyIsUnsafe cannot catch it: it looks at the target,
+// which may have a null prototype, be null or a primitive, or own a `__proto__`
+// key (JSON.parse creates one), while the destination is always a plain object.
+// The key is therefore never copied, judged by its name alone.
+function keyIsForbidden(key) {
+	return key === '__proto__'
+}
+
 // Protects from prototype poisoning and unexpected merging up the prototype chain.
 function propertyIsUnsafe(target, key) {
 	return propertyIsOnObject(target, key) // Properties are safe to merge if they don't exist in the target yet,
@@ -55,11 +64,14 @@ function mergeObject(target, source, options) {
 	var destination = {}
 	if (options.isMergeableObject(target)) {
 		getKeys(target).forEach(function(key) {
+			if (keyIsForbidden(key)) {
+				return
+			}
 			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options)
 		})
 	}
 	getKeys(source).forEach(function(key) {
-		if (propertyIsUnsafe(target, key)) {
+		if (keyIsForbidden(key) || propertyIsUnsafe(target, key)) {
 			return
 		}
 
