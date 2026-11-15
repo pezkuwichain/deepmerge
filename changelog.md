@@ -1,3 +1,8 @@
+# [4.3.2](https://github.com/pezkuwichain/deepmerge/releases/tag/v4.3.2) (@pezkuwi/deepmerge)
+
+- Security: a `__proto__` key is never copied into the merged object, from the target or the source. The existing guard judged keys by looking at the target, so when the target had a null prototype, was a `null`, `undefined` or primitive placeholder, or owned a `__proto__` key (as `JSON.parse` creates), assigning the key replaced the prototype of the returned object with attacker-controlled data (CVE-2026-93753, GHSA-gcqx-w48m-w2h4).
+- Published as `@pezkuwi/deepmerge`, a fork of TehShrike/deepmerge.
+
 # [4.3.1](https://github.com/TehShrike/deepmerge/releases/tag/v4.3.1)
 
 - Fix type definition for arrayMerge options.  [#239](https://github.com/TehShrike/deepmerge/pull/239)
